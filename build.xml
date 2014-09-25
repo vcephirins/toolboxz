@@ -4,13 +4,12 @@
               To include a user specific buildfile here, simply create one in the same
               directory with the processing instruction <?eclipse.ant.import?>
               as the first entry and export the buildfile again. -->
-<project basedir="." default="build" name="zeph">
+<project basedir="." default="build" name="toolboxz">
     <property environment="env"/>
-    <property name="ECLIPSE_HOME" value="C:/Program Files/eclipse_europa"/>
     <property name="debuglevel" value="source,lines,vars"/>
     <property name="target" value="1.6"/>
     <property name="source" value="1.6"/>
-    <path id="zeph.classpath">
+    <path id="toolboxz.classpath">
         <pathelement location="build"/>
         <pathelement location="lib/log4j-1.2.15.jar"/>
         <pathelement location="lib/log5j-1.2.jar"/>
@@ -31,17 +30,17 @@
         <echo message="${ant.project.name}: ${ant.file}"/>
         <javac debug="true" debuglevel="${debuglevel}" destdir="build" source="${source}" target="${target}">
             <src path="src"/>
-            <classpath refid="zeph.classpath"/>
+            <classpath refid="toolboxz.classpath"/>
         </javac>
     </target>
     <target description="Build all projects which reference this project. Useful to propagate changes." name="build-refprojects"/>
     <target description="copy Eclipse compiler jars to ant lib directory" name="init-eclipse-compiler">
         <copy todir="${ant.library.dir}">
-            <fileset dir="${ECLIPSE_HOME}/plugins" includes="org.eclipse.jdt.core_*.jar"/>
+            <fileset dir="${eclipse.home}/plugins" includes="org.eclipse.jdt.core_*.jar"/>
         </copy>
         <unzip dest="${ant.library.dir}">
             <patternset includes="jdtCompilerAdapter.jar"/>
-            <fileset dir="${ECLIPSE_HOME}/plugins" includes="org.eclipse.jdt.core_*.jar"/>
+            <fileset dir="${eclipse.home}/plugins" includes="org.eclipse.jdt.core_*.jar"/>
         </unzip>
     </target>
     <target description="compile project with Eclipse compiler" name="build-eclipse-compiler">
