@@ -3,32 +3,35 @@
               Any modifications will be overwritten.
               To include a user specific buildfile here, simply create one in the same
               directory with the processing instruction <?eclipse.ant.import?>
-              as the first entry and export the buildfile again. -->
-<project basedir="." default="build" name="toolboxz">
+              as the first entry and export the buildfile again. --><project basedir="." default="build" name="toolboxz">
     <property environment="env"/>
+    <property name="commonLibs.location" value="../commonLibs"/>
+    <property name="ECLIPSE_HOME" value="C:/Program Files/eclipse_mars2/"/>
     <property name="debuglevel" value="source,lines,vars"/>
-    <property name="target" value="1.6"/>
-    <property name="source" value="1.6"/>
+    <property name="target" value="1.8"/>
+    <property name="source" value="1.8"/>
     <path id="toolboxz.classpath">
-        <pathelement location="build"/>
-        <pathelement location="lib/log4j-1.2.15.jar"/>
-        <pathelement location="lib/log5j-1.2.jar"/>
+        <pathelement location="bin"/>
+        <pathelement location="${commonLibs.location}/libraries/log5j-1.2/log5j-1.2.jar"/>
+        <pathelement location="${commonLibs.location}/libraries/apache-log4j-1.2.15/log4j-1.2.15.jar"/>
     </path>
     <target name="init">
-        <mkdir dir="build"/>
-        <copy includeemptydirs="false" todir="build">
-            <fileset dir="src" excludes="**/*.launch, **/*.java"/>
+        <mkdir dir="bin"/>
+        <copy includeemptydirs="false" todir="bin">
+            <fileset dir="src">
+                <exclude name="**/*.java"/>
+            </fileset>
         </copy>
     </target>
     <target name="clean">
-        <delete dir="build"/>
+        <delete dir="bin"/>
     </target>
     <target depends="clean" name="cleanall"/>
     <target depends="build-subprojects,build-project" name="build"/>
     <target name="build-subprojects"/>
     <target depends="init" name="build-project">
         <echo message="${ant.project.name}: ${ant.file}"/>
-        <javac debug="true" debuglevel="${debuglevel}" destdir="build" source="${source}" target="${target}">
+        <javac debug="true" debuglevel="${debuglevel}" destdir="bin" includeantruntime="false" source="${source}" target="${target}">
             <src path="src"/>
             <classpath refid="toolboxz.classpath"/>
         </javac>
@@ -36,11 +39,11 @@
     <target description="Build all projects which reference this project. Useful to propagate changes." name="build-refprojects"/>
     <target description="copy Eclipse compiler jars to ant lib directory" name="init-eclipse-compiler">
         <copy todir="${ant.library.dir}">
-            <fileset dir="${eclipse.home}/plugins" includes="org.eclipse.jdt.core_*.jar"/>
+            <fileset dir="${ECLIPSE_HOME}/plugins" includes="org.eclipse.jdt.core_*.jar"/>
         </copy>
         <unzip dest="${ant.library.dir}">
             <patternset includes="jdtCompilerAdapter.jar"/>
-            <fileset dir="${eclipse.home}/plugins" includes="org.eclipse.jdt.core_*.jar"/>
+            <fileset dir="${ECLIPSE_HOME}/plugins" includes="org.eclipse.jdt.core_*.jar"/>
         </unzip>
     </target>
     <target description="compile project with Eclipse compiler" name="build-eclipse-compiler">
