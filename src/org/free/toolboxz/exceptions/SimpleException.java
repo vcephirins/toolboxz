@@ -77,7 +77,7 @@ public class SimpleException extends Exception {
      * @param arguments les arguments du message d'erreur.
      */
     public SimpleException(Throwable e, String ident, Object... arguments) {
-        super(Messages.getInstance().getMessage(ident, arguments));
+        super(Messages.getMessage(ident, arguments));
         // créé le message détail
         this.initCause(e);
         identMessage = ident;

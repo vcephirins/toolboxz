@@ -28,12 +28,12 @@ public class ConvertDate {
 
         try {
             // Chargement des messages d'exception applicatifs
-            Messages.getInstance().load("org.free.toolboxz.exceptions.messagesException");
+            Messages.load("org.free.toolboxz.exceptions.messagesException");
 
             JulianDate jd = new JulianDate();
             
             for (int indArg = 0; indArg < args.length; indArg++) {
-                if (args[indArg].startsWith("-h") || args[indArg].equals("--help")) {
+                if (args[indArg].equals("-h") || args[indArg].equals("--help")) {
                     throw new SimpleException("exception.ConvertDate.syntax");
                 }
                 

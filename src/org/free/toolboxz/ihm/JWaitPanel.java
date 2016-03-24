@@ -27,7 +27,7 @@ public class JWaitPanel extends JPanel implements ActionListener {
      */
     private static final long serialVersionUID = 1L;
 
-    SwingWorker sw;
+    SwingWorker<?, ?> sw;
 
     JButton jbnStop;
     private JProgressBar progressBar;
@@ -36,7 +36,7 @@ public class JWaitPanel extends JPanel implements ActionListener {
      * Constructeur.
      * <p>
      */
-    public JWaitPanel(SwingWorker sw) {
+    public JWaitPanel(SwingWorker<?, ?> sw) {
         super();
 
         this.sw = sw;

@@ -44,7 +44,7 @@ public class DatabaseRequests extends DatabaseConnection {
     protected PreparedStatement getRequest(Class<? extends Enum> enumType, String request) throws DatabaseException {
         int indice;
         try {
-            Enum rq = Enum.valueOf(enumType, request);
+            Enum<?> rq = Enum.valueOf(enumType, request);
             indice = rq.ordinal();
             if (ps[indice] == null) {
                 // Pr�-compilation de la requete
@@ -82,7 +82,7 @@ public class DatabaseRequests extends DatabaseConnection {
      */
     protected void closeRequest(Class<? extends Enum> enumType, String request) throws DatabaseException {
         try {
-            Enum rq = Enum.valueOf(enumType, request);
+            Enum<?> rq = Enum.valueOf(enumType, request);
             int indice = rq.ordinal();
             if (ps[indice] != null) {
                 // Lib�ration des ressources

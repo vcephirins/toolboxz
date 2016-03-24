@@ -37,7 +37,7 @@ public class CryptWin extends JFrame implements ActionListener {
     private JFileChooser fc = new JFileChooser();
 
     private JButton jbnFile, jbnRead;
-    private JComboBox jcmbTypes;
+    private JComboBox<?> jcmbTypes;
 
     private JTextField jtfInput, jtfFile;
     private JTextField jtfHash;
@@ -140,7 +140,7 @@ public class CryptWin extends JFrame implements ActionListener {
         jlbl = new JLabel("Method :");
         panel.add(jlbl, gbc);
 
-        jcmbTypes = new JComboBox(EnumAlgo.values());
+        jcmbTypes = new JComboBox<Object>(EnumAlgo.values());
         jcmbTypes.addActionListener(this);
         gbc.update(++gridx, gridy);
         panel.add(jcmbTypes, gbc);

@@ -34,19 +34,19 @@ public class ChecksumSHA1 {
 
         try {
             // Chargement des messages d'exception applicatifs
-            Messages.getInstance().load("org.free.toolboxz.exceptions.messagesException");
+            Messages.load("org.free.toolboxz.exceptions.messagesException");
 
             for (int indArg = 0; indArg < args.length; indArg++) {
-                if (args[indArg].startsWith("-h") || args[indArg].equals("--help")) {
+                if (args[indArg].equals("-h") || args[indArg].equals("--help")) {
                     throw new SimpleException("exception.ChecksumMD5.syntax");
                 }
 
-                if (args[indArg].startsWith("-t") || args[indArg].equals("--text")) {
+                if (args[indArg].equals("-t") || args[indArg].equals("--text")) {
                     String value = Sha1.encode(args[indArg + 1]);
                     System.out.println(args[indArg + 1] + " : " + value);
                 }
 
-                if (args[indArg].startsWith("-f") || args[indArg].equals("--file")) {
+                if (args[indArg].equals("-f") || args[indArg].equals("--file")) {
                     in = new FileInputStream(new File(args[indArg + 1]));
                     String value = Sha1.encode(in);
                     System.out.println(args[indArg + 1] + " : " + value);

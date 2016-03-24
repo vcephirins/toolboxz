@@ -2,9 +2,12 @@ package org.free.toolboxz.goodies;
 
 import java.io.IOException;
 import java.lang.management.ManagementFactory;
+import java.lang.management.MemoryMXBean;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.nio.charset.Charset;
+import java.util.Collection;
 
 /**
  * Classe utilitaire regroupant des outils génériques.
@@ -18,6 +21,11 @@ public abstract class Divers {
     // Inhibe l'instanciation de la classe.
     private Divers() {}
 
+    /**
+     * Informations sur l'utilisation de la mémoire.<p>
+     * @return l'utilisation courant de la mémoire.
+     * @see MemoryMXBean 
+     */
     public static String getHeapMemoryUsage() {
         return ManagementFactory.getMemoryMXBean().getHeapMemoryUsage().toString();
     }
@@ -37,6 +45,15 @@ public abstract class Divers {
         }
     }
 
+    /**
+     * Liste des charsets disponiblent dans cette environnement.<p>
+     * @return une collection des charsets disponiblent.
+     * @see Charset
+     */
+    public Collection<Charset> getAvailableCharsets() {
+        return Charset.availableCharsets().values();
+    }
+    
     /**
      * tabToString.
      * <p>

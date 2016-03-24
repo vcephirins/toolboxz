@@ -13,59 +13,68 @@ import java.util.ResourceBundle;
  * @version 1.0, 20/01/2009
  *          <li>Creation</li>
  */
-public class Messages {
-    /**
-     * L'instance du singleton
-     */
-    private static Messages instance = null;
+public abstract class Messages {
 
     /**
-     * Le gestionnaire de message par défaut
+     * Affecte la locale par défaut à celle de l'environnement
      */
-    private static ResourceBundle resourceDefault = null;
+    private static Locale localeDefault = Locale.getDefault();
+    
+    /**
+     * Le gestionnaire des messages utilisateur
+     */
     private static ResourceBundle resource = null;
+    private static ResourceBundle resourceDefault = null; 
 
     /**
-     * Constructeur
+     * Le gestionnaire des messages interne par défaut
      */
-    protected Messages() {
-        try {
-            resourceDefault = ResourceBundle.getBundle("org.free.toolboxz.exceptions.messagesException");
-        }
-        catch (MissingResourceException mre) {
-            resourceDefault = ResourceBundle
-                .getBundle("org.free.toolboxz.exceptions.messagesException", Locale.ENGLISH);
-        }
-    }
+    private static ResourceBundle resourceInterne = ResourceBundle.getBundle("org.free.toolboxz.exceptions.messagesException");
+    private static ResourceBundle resourceInterneDefault = ResourceBundle.getBundle("org.free.toolboxz.exceptions.messagesException", Locale.ENGLISH);
 
-    public void load(String file) {
-        try {
-            resource = ResourceBundle.getBundle(file);
-        }
-        catch (MissingResourceException mre) {
-            resourceDefault = ResourceBundle.getBundle(file, Locale.ENGLISH);
-        }
-    }
-
-    public void load(String file, Locale locale) {
-        try {
-            resource = ResourceBundle.getBundle(file, locale);
-        }
-        catch (MissingResourceException mre) {
-            resourceDefault = ResourceBundle.getBundle(file, Locale.ENGLISH);
-        }
+    /**
+     * Constructeur privé
+     */
+    private Messages() {
     }
 
     /**
-     * @return l'instance unique du singleton
+     * Charge en mémoire les messages.
+     * <p>
+     * La langue sélectionnée est la locale par défaut.
+     * 
+     * @param file
      */
-    public static Messages getInstance() {
-        if (instance == null) {
-            instance = new Messages();
-        }
-        return instance;
+    public static void load(String file) {
+        load(file, Locale.getDefault());
     }
 
+    /**
+     * Charge en mémoire les messages.
+     * <p>
+     * La langue sélectionnée est la locale fournie.
+     * 
+     * @param basenameBundle 
+     * @param locale
+     * @throws NullPointerException si le nom de base ou la locale est null
+     * @throws MissingResourceException si la resource basée sur nom du bundle est non trouvé
+     */
+    public static void load(String basenameBundle, Locale locale) {
+        try {
+            resource = ResourceBundle.getBundle(basenameBundle, locale);
+        }
+        catch (MissingResourceException mre) {
+            resourceDefault = ResourceBundle.getBundle(basenameBundle, localeDefault);
+        }
+    }
+
+    public static void setLocale(Locale locale) {
+        localeDefault = locale;
+        
+        // Recharge le fichier dans la locale demandée
+        if (resource != null) load(resource.getBaseBundleName(), locale);
+    }
+    
     /**
      * Récupère le message dans le fichier de configuration
      * 
@@ -73,7 +82,7 @@ public class Messages {
      * @param args les arguments du message
      * @return le message format�
      */
-    public String getMessage(String ident, Object... args) {
+    public static String getMessage(String ident, Object... args) {
         String message = "";
 
         try {
@@ -81,13 +90,13 @@ public class Messages {
             else message = Messages.resourceDefault.getString(ident);
         }
         catch (MissingResourceException mre) {
-            // recherche dans les messages par d�faut
+            // recherche dans les messages par défaut
             try {
                 message = Messages.resourceDefault.getString(ident);
             }
             catch (MissingResourceException e) {
                 // Si on ne trouve pas le message
-                message = "Message ident ''" + ident + "'' not found in messages file.";
+                message = "Message ident ''" + ident + "'' not found in message files.";
             }
         }
         return MessageFormat.format(message, args);

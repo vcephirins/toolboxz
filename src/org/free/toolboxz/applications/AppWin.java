@@ -27,7 +27,7 @@ public class AppWin {
      */
     public static void main(String[] args) {
         // Chargement des messages d'exception applicatifs
-        Messages.getInstance().load("org.free.toolboxz.exceptions.messagesException");
+        Messages.load("org.free.toolboxz.exceptions.messagesException");
 
         LOGGER.setLevel(Level.ERROR);
 
